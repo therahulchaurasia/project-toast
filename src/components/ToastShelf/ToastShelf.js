@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react'
 
-import Toast from '../Toast';
-import styles from './ToastShelf.module.css';
+import Toast from '../Toast'
+import styles from './ToastShelf.module.css'
+import { ToastContext } from '../../context/ToastContextProvider'
 
 function ToastShelf() {
+	const {toastDataStore} = useContext(ToastContext)
   return (
     <ol className={styles.wrapper}>
-      <li className={styles.toastWrapper}>
-        <Toast variant="notice">Example notice toast</Toast>
-      </li>
-      <li className={styles.toastWrapper}>
+      {toastDataStore.map((toast) => (
+        <li className={styles.toastWrapper} key={toast.id}>
+          <Toast toastId={toast.id} variant={toast.variant}>
+            {toast.message}
+          </Toast>
+        </li>
+      ))}
+      {/* <li className={styles.toastWrapper}>
         <Toast variant="error">Example error toast</Toast>
-      </li>
+      </li> */}
     </ol>
-  );
+  )
 }
 
-export default ToastShelf;
+export default ToastShelf
