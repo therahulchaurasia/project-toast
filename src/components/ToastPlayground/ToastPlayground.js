@@ -1,35 +1,28 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 
 import Button from '../Button'
 
-import styles from './ToastPlayground.module.css'
-import Toast from '../Toast/Toast'
-import ToastShelf from '../ToastShelf/ToastShelf'
 import { ToastContext } from '../../context/ToastContextProvider'
+import ToastShelf from '../ToastShelf/ToastShelf'
+import styles from './ToastPlayground.module.css'
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error']
 
 function ToastPlayground() {
-  const {setToastDataStore} = useContext(ToastContext)
-  console.log({ setToastDataStore })
+  const { createToast } = useContext(ToastContext)
   const [message, setMessage] = useState('')
-  const [toastVariant, setToastVariant] = useState('')
+  const [toastVariant, setToastVariant] = useState(VARIANT_OPTIONS[0])
   const handlePopToast = (e) => {
     e.preventDefault()
     if (!message || !toastVariant) {
       return alert('Please fill in the required values')
     }
-    const toast = {
-      id: crypto.randomUUID(),
-      message: message,
-      variant: toastVariant,
-    }
-    setToastDataStore((ps) => [...ps, toast])
+    createToast(message, toastVariant)
     emptyValues()
   }
 
   const emptyValues = () => {
     setMessage('')
-    setToastVariant('')
+    setToastVariant(VARIANT_OPTIONS[0])
   }
 
   return (
@@ -45,9 +38,7 @@ function ToastPlayground() {
           handleDismiss={handleDismiss}
         />
       )} */}
-      <ToastShelf
-      
-      />
+      <ToastShelf />
       <form onSubmit={handlePopToast}>
         <div className={styles.controlsWrapper}>
           <ToastInput message={message} setMessage={setMessage} />

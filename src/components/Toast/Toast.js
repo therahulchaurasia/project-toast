@@ -20,7 +20,7 @@ const ICONS_BY_VARIANT = {
 }
 
 function Toast({ toastId, children, variant }) {
-  const { setToastDataStore } = useContext(ToastContext)
+  const { removeToast } = useContext(ToastContext)
   const SelectedIcon = ICONS_BY_VARIANT[variant]
   const selectedStyles = styles[variant]
   return (
@@ -28,16 +28,22 @@ function Toast({ toastId, children, variant }) {
       <div className={styles.iconContainer}>
         <SelectedIcon size={24} />
       </div>
-      <p className={styles.content}>{children}</p>
+      <p className={styles.content}>
+        <VisuallyHidden>{variant}</VisuallyHidden>
+        {children}
+      </p>
       <button
         className={styles.closeButton}
+        aria-label='Dismiss Message'
+        aria-live='off'
         onClick={() => {
-          console.log('say hii')
-          setToastDataStore((ps) => ps.filter((val) => val.id !== toastId))
+          removeToast(toastId)
         }}
       >
         <X size={24} />
-        <VisuallyHidden>Dismiss message</VisuallyHidden>
+      
+			
+			  {/* <VisuallyHidden>Dismiss message</VisuallyHidden> */}
       </button>
     </div>
   )
